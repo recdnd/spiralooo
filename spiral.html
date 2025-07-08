@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<link rel="icon" type="image/png" href="blobspiral_32x32.png">
+  <meta charset="UTF-8" />
+  <title>spiral</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #fff8f6;
+      color: #111;
+      font-family: "IBM Plex Mono", monospace;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+    }
+
+    img {
+      max-width: 28vmin;
+      max-height: 28vmin;
+      animation: slowSpin 70s linear infinite;
+      transition: animation-duration 0.3s ease;
+    }
+
+    img:hover {
+      animation-duration: 10s;
+    }
+
+    @keyframes slowSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(-360deg); }
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 1.2rem;
+      font-size: 0.75rem;
+      color: #999;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <img src="blobspiral.png" alt="Spiral Logo" />
+  <div class="footer">Entatic Spiral Directive — All rights reserved.</div>
+</body>
+</html>
