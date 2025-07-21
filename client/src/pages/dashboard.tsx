@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import blobPenLogo from "@assets/blobpen_1753121234492.png";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("fragments");
@@ -92,8 +93,12 @@ export default function Dashboard() {
       <header className="bg-white border-b-2 border-spiral-red px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <div className="w-8 h-8 bg-spiral-red rounded flex items-center justify-center">
-              <span className="text-white text-lg">𖤂</span>
+            <div className="w-8 h-8 flex items-center justify-center">
+              <img 
+                src={blobPenLogo}
+                alt="Spiral Platform" 
+                className="w-6 h-6"
+              />
             </div>
             <h1 className="text-xl font-semibold text-spiral-dark">Spiral Platform</h1>
             <span className="text-spiral-gray text-sm">Language Field Document System</span>

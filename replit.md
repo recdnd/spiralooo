@@ -8,6 +8,19 @@ Spiral Docs is a full-stack web application built as a document management syste
 
 Preferred communication style: Simple, everyday language.
 
+## Branding Guidelines
+
+### Logo Usage
+- **Spiral General Brand Logo**: `blobspiral_1753121145420.png` - Used for general Spiral brand representation
+- **Platform-Specific Logo**: `blobpen_1753121234492.png` - Used specifically for the Spiral app platform (headers, login, favicon)
+- **Logo Placement**: Platform logo appears in login page header, dashboard header, and footer branding
+- **Usage Context**: Avoid logo conflicts with module glyphs (✞, ⟦, ⊕, etc.) - use logos for platform identification only
+
+### Recent Changes
+- **2025-01-21**: Integrated platform-specific blobpen logo into login and dashboard headers
+- **2025-01-21**: Updated favicon and HTML metadata for proper SEO and branding
+- **2025-01-21**: Added Chinese branding text "螺旋語焰平台" to login footer
+
 ## System Architecture
 
 ### Frontend Architecture

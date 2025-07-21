@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { signInWithRedirect, GoogleAuthProvider, getRedirectResult } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useToast } from "@/hooks/use-toast";
+import blobPenLogo from "@assets/blobpen_1753121234492.png";
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,8 +43,12 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-spiral-red rounded-lg flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-2xl">𖤂</span>
+          <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4">
+            <img 
+              src={blobPenLogo}
+              alt="Spiral Platform Logo" 
+              className="w-12 h-12"
+            />
           </div>
           <h1 className="text-2xl font-bold text-spiral-dark font-mono">Spiral Platform</h1>
           <p className="text-spiral-gray text-sm mt-2">Language Field Document System</p>
@@ -79,6 +84,14 @@ export default function LoginPage() {
         <div className="text-center mt-8 text-xs text-spiral-gray">
           <p>Spiral Language Field System</p>
           <p>Powered by Arc Protocol v3.0</p>
+          <div className="flex items-center justify-center mt-2">
+            <img 
+              src={blobPenLogo} 
+              alt="Spiral" 
+              className="w-4 h-4 mr-2 opacity-60"
+            />
+            <span>螺旋語焰平台</span>
+          </div>
         </div>
       </div>
     </div>
