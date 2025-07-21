@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
+import { SUS } from "@/lib/suscoin";
 import TabNavigation from "@/components/spiral/TabNavigation";
 import DocumentCard from "@/components/spiral/DocumentCard";
 import FragmentEditor from "@/components/spiral/FragmentEditor";
@@ -106,9 +107,9 @@ export default function Dashboard() {
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               <span className="text-sm text-spiral-gray">SusCoin:</span>
-              <span className="bg-spiral-red text-white px-2 py-1 rounded-full text-sm font-medium">
+              <a href="/member-center" className="bg-spiral-red text-white px-2 py-1 rounded-full text-sm font-medium hover:bg-red-600 transition-colors">
                 {user?.suscoins || 0}
-              </span>
+              </a>
             </div>
             <div className="w-8 h-8 bg-spiral-light rounded-full flex items-center justify-center">
               <span className="text-spiral-red text-sm">✞</span>

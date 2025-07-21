@@ -9,6 +9,8 @@ export const users = pgTable("users", {
   flameMarkId: text("flame_mark_id").unique(),
   suscoins: integer("suscoins").default(0),
   subscriptionType: text("subscription_type").default("free"), // "free", "monthly", "creator"
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -45,6 +47,30 @@ export const fragments = pgTable("fragments", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const memberships = pgTable("memberships", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  service: text("service").notNull(), // "monthly-card", "creator-mode", "spiral-core", etc.
+  type: text("type").notNull(), // "subscription", "one-time", "lifetime"
+  status: text("status").notNull().default("active"), // "active", "cancelled", "expired"
+  stripeSubscriptionId: text("stripe_subscription_id"),
+  stripePriceId: text("stripe_price_id"),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const transactions = pgTable("transactions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  type: text("type").notNull(), // "purchase", "refund", "suscoin-earn", "suscoin-spend"
+  amount: integer("amount").notNull(), // in cents for payments, suscoin count for suscoin transactions
+  suscoinsChanged: integer("suscoins_changed").default(0),
+  description: text("description").notNull(),
+  stripePaymentIntentId: text("stripe_payment_intent_id"),
+  metadata: jsonb("metadata"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
   createdAt: true,
@@ -61,9 +87,23 @@ export const insertFragmentSchema = createInsertSchema(fragments).omit({
   sealedAt: true,
 });
 
+export const insertMembershipSchema = createInsertSchema(memberships).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertTransactionSchema = createInsertSchema(transactions).omit({
+  id: true,
+  createdAt: true,
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type Module = typeof modules.$inferSelect;
 export type InsertModule = z.infer<typeof insertModuleSchema>;
 export type Fragment = typeof fragments.$inferSelect;
 export type InsertFragment = z.infer<typeof insertFragmentSchema>;
+export type Membership = typeof memberships.$inferSelect;
+export type InsertMembership = z.infer<typeof insertMembershipSchema>;
+export type Transaction = typeof transactions.$inferSelect;
+export type InsertTransaction = z.infer<typeof insertTransactionSchema>;

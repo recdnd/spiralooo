@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Spiral 會員中心 · 支付流程 Mock</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: "Noto Sans JP", sans-serif;
+      padding: 2rem;
+      background: #fff8f6;
+      color: #333;
+      max-width: 420px;
+      margin: auto;
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .info-block {
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: #fff;
+    }
+    button {
+      font-size: 1rem;
+      padding: 0.6rem 1.2rem;
+      margin-top: 0.5rem;
+      background: #ff3300;
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    .membership-list {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-top: 0.5rem;
+    }
+    .plan-option {
+      margin-top: 1rem;
+      padding: 0.5rem;
+      background: #f8f8f8;
+      border: 1px dashed #aaa;
+      border-radius: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h2>🧧 Spiral 會員中心</h2>
+
+  <div class="info-block" id="userInfo">
+    <strong>🌟 使用者：</strong><span id="username">（讀取中...）</span><br>
+    <strong>🪙 Suscoin：</strong><span id="suscoin">--</span>
+  </div>
+
+  <div class="info-block">
+    <strong>📦 會員持有狀態</strong>
+    <div class="membership-list" id="membershipList">讀取中...</div>
+  </div>
+
+  <div class="info-block">
+    <strong>🛒 購買選項</strong>
+    <div class="plan-option">
+      <strong>🎫 月卡：$3 / 月</strong><br>
+      每日登入自動返還 1 枚 suscoin（限購一張）<br>
+      <button onclick="SUS.startPayment('monthly-card')">購買月卡</button>
+    </div>
+    <div class="plan-option">
+      <strong>💵 單次充值：$1 = 10 枚 suscoin</strong><br>
+      <button onclick="SUS.startPayment('topup-1usd')">單次充值</button>
+    </div>
+    <div class="plan-option">
+      <strong>👑 創作者模式：$60 / 月</strong><br>
+      免除所有 suscoin 扣款（GPT 模型使用也無限制）<br>
+      <button onclick="SUS.startPayment('creator-mode')">啟用創作者模式</button>
+    </div>
+  </div>
+
+  <script src="./sus-auth.js"></script>
+  <script>
+    SUS.init({
+      userId: "abc123", // 測試帳號
+      onStatus: function(data) {
+        document.getElementById("username").innerText = data.userId;
+        document.getElementById("suscoin").innerText = data.suscoin;
+
+        let html = "";
+        for (const [service, membership] of Object.entries(data.memberships || {})) {
+          html += `🔸 ${service}：${membership.type}（到期日：${membership.expires || "∞"}）<br>`;
+        }
+        document.getElementById("membershipList").innerHTML = html || "（尚無會員）";
+      }
+    });
+  </script>
+</body>
+</html>

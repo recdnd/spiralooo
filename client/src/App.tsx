@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import Dashboard from "@/pages/dashboard";
+import MemberCenter from "@/pages/member-center";
 import NotFound from "@/pages/not-found";
 import LoginPage from "@/components/auth/LoginPage";
 
@@ -27,6 +28,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Dashboard} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/member-center" component={MemberCenter} />
       <Route component={NotFound} />
     </Switch>
   );

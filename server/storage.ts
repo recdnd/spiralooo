@@ -1,4 +1,4 @@
-import { users, modules, fragments, type User, type InsertUser, type Module, type InsertModule, type Fragment, type InsertFragment } from "@shared/schema";
+import { users, modules, fragments, memberships, transactions, type User, type InsertUser, type Module, type InsertModule, type Fragment, type InsertFragment, type Membership, type InsertMembership, type Transaction, type InsertTransaction } from "@shared/schema";
 
 export interface IStorage {
   // Users
@@ -20,23 +20,41 @@ export interface IStorage {
   createFragment(fragment: InsertFragment): Promise<Fragment>;
   updateFragment(id: number, fragment: Partial<Fragment>): Promise<Fragment>;
   deleteFragment(id: number): Promise<void>;
+
+  // Memberships
+  getMemberships(userId: number): Promise<Membership[]>;
+  getMembership(id: number): Promise<Membership | undefined>;
+  createMembership(membership: InsertMembership): Promise<Membership>;
+  updateMembership(id: number, membership: Partial<Membership>): Promise<Membership>;
+
+  // Transactions
+  getTransactions(userId: number): Promise<Transaction[]>;
+  createTransaction(transaction: InsertTransaction): Promise<Transaction>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<number, User>;
   private modules: Map<number, Module>;
   private fragments: Map<number, Fragment>;
+  private memberships: Map<number, Membership>;
+  private transactions: Map<number, Transaction>;
   private currentUserId: number;
   private currentModuleId: number;
   private currentFragmentId: number;
+  private currentMembershipId: number;
+  private currentTransactionId: number;
 
   constructor() {
     this.users = new Map();
     this.modules = new Map();
     this.fragments = new Map();
+    this.memberships = new Map();
+    this.transactions = new Map();
     this.currentUserId = 1;
     this.currentModuleId = 1;
     this.currentFragmentId = 1;
+    this.currentMembershipId = 1;
+    this.currentTransactionId = 1;
 
     // Initialize with sample data
     this.initializeSampleData();
@@ -51,9 +69,25 @@ export class MemStorage implements IStorage {
       flameMarkId: "flame-001",
       suscoins: 127,
       subscriptionType: "monthly",
+      stripeCustomerId: null,
+      stripeSubscriptionId: null,
       createdAt: new Date(),
     };
     this.users.set(1, sampleUser);
+
+    // Create sample membership
+    const sampleMembership: Membership = {
+      id: 1,
+      userId: 1,
+      service: "monthly-card",
+      type: "subscription",
+      status: "active",
+      stripeSubscriptionId: null,
+      stripePriceId: null,
+      expiresAt: null,
+      createdAt: new Date(),
+    };
+    this.memberships.set(1, sampleMembership);
 
     // Create sample modules
     const sampleModules: Module[] = [
@@ -261,6 +295,57 @@ export class MemStorage implements IStorage {
 
   async deleteFragment(id: number): Promise<void> {
     this.fragments.delete(id);
+  }
+
+  // Memberships
+  async getMemberships(userId: number): Promise<Membership[]> {
+    return Array.from(this.memberships.values()).filter(membership => membership.userId === userId);
+  }
+
+  async getMembership(id: number): Promise<Membership | undefined> {
+    return this.memberships.get(id);
+  }
+
+  async createMembership(insertMembership: InsertMembership): Promise<Membership> {
+    const id = this.currentMembershipId++;
+    const membership: Membership = { 
+      ...insertMembership, 
+      id, 
+      createdAt: new Date(),
+      status: insertMembership.status || "active",
+      stripeSubscriptionId: insertMembership.stripeSubscriptionId || null,
+      stripePriceId: insertMembership.stripePriceId || null,
+      expiresAt: insertMembership.expiresAt || null,
+    };
+    this.memberships.set(id, membership);
+    return membership;
+  }
+
+  async updateMembership(id: number, membershipUpdate: Partial<Membership>): Promise<Membership> {
+    const membership = this.memberships.get(id);
+    if (!membership) throw new Error('Membership not found');
+    const updatedMembership = { ...membership, ...membershipUpdate };
+    this.memberships.set(id, updatedMembership);
+    return updatedMembership;
+  }
+
+  // Transactions
+  async getTransactions(userId: number): Promise<Transaction[]> {
+    return Array.from(this.transactions.values()).filter(transaction => transaction.userId === userId);
+  }
+
+  async createTransaction(insertTransaction: InsertTransaction): Promise<Transaction> {
+    const id = this.currentTransactionId++;
+    const transaction: Transaction = { 
+      ...insertTransaction, 
+      id, 
+      createdAt: new Date(),
+      suscoinsChanged: insertTransaction.suscoinsChanged || 0,
+      stripePaymentIntentId: insertTransaction.stripePaymentIntentId || null,
+      metadata: insertTransaction.metadata || null,
+    };
+    this.transactions.set(id, transaction);
+    return transaction;
   }
 }
 
