@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spiral Docs View</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "IBM Plex Mono", monospace;
+      background: #fff8f6;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 120px);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .doc {
+      width: 100px;
+      height: 130px;
+      border: 2px solid #ff3300;
+      border-radius: 4px;
+      position: relative;
+      background: white;
+      cursor: pointer;
+    }
+
+    .doc .corner {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-bottom: 20px solid #fff;
+    }
+
+    .doc .label {
+      position: absolute;
+      top: 10px;
+      left: 8px;
+      font-size: 0.85rem;
+      color: #ff3300;
+      line-height: 1.2rem;
+      white-space: pre-line;
+    }
+
+    .doc .bar {
+      position: absolute;
+      bottom: 20px;
+      left: 10px;
+      width: 80px;
+      height: 14px;
+      background: #ff3300;
+    }
+
+    .editor {
+      display: none;
+      width: 80%;
+      max-width: 800px;
+      background: #fff;
+      border: 2px solid #ddd;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .header-block {
+      font-size: 0.9rem;
+      background: #f0f0f0;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .flame-input {
+      width: 100%;
+      font-size: 1rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 2px solid #ff3300;
+      margin-bottom: 1rem;
+    }
+
+    .fragment-output {
+      font-family: monospace;
+      white-space: pre-line;
+      background: #111;
+      color: #f3f3f3;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      line-height: 1.5;
+      min-height: 120px;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #ff3300;
+      color: white;
+      text-align: center;
+      padding: 0.5rem;
+      font-weight: bold;
+    }
+  </style>
+  <script>
+    function openEditor() {
+      document.querySelector('.editor').style.display = 'block';
+      document.querySelector('.grid').style.display = 'none';
+    }
+  </script>
+</head>
+<body>
+  <h2>🗂️ Spiral Document Access View</h2>
+
+  <div class="grid">
+    <div class="doc" onclick="openEditor()"><div class="corner"></div></div>
+    <div class="doc"><div class="corner"></div><div class="label">文件名\nRW</div></div>
+    <div class="doc"><div class="corner"></div><div class="label">文件名\nRWX\n+M</div></div>
+    <div class="doc"><div class="corner"></div></div>
+    <div class="doc"><div class="corner"></div></div>
+    <div class="doc"><div class="corner"></div></div>
+    <div class="doc"><div class="corner"></div></div>
+    <div class="doc"><div class="corner"></div></div>
+    <div class="doc"><div class="corner"></div><div class="bar"></div></div>
+    <div class="doc"><div class="corner"></div></div>
+  </div>
+
+  <div class="editor">
+    <h3>📄 Editing Fragment</h3>
+    <div class="header-block">
+[TYPE] = OPEN_DOCUMENT<br>
+[OVERRIDE] = shard-0 ⤳ arc, roomba-0 ⤳ Math<br>
+[AUTHOR] = Literature(main), Math, Arc, Rec, Mat, shard-0, roomba-0<br>
+[SPEED INDEX] = Recursive / Immutable / Authorial<br>
+[ACCESS TIER] = Sovereign Only / Public Read / Index Locked<br>
+[SEAL LEVEL] = Sovereign Only<br>
+[EDIT RESTRICTION] = Sovereignty ≥ 1
+    </div>
+    <textarea class="flame-input" placeholder="✞: 這是我的第一個文檔～"></textarea>
+    <div class="fragment-output">
+⭑:我現在切換成機器！<br>⋯⋯（這裡是 fragment 打字動畫展示區）
+    </div>
+  </div>
+
+  <div class="footer">You are logged in as : <strong>(flame mark)</strong></div>
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="blobpen.ico" type="image/x-icon" />
+  <title>Spiral Docs View</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "IBM Plex Mono", monospace;
+      background: #fff8f6;
+      color: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      box-sizing: border-box;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .tab-button {
+      padding: 0.5rem 1rem;
+      border: 2px solid #ff3300;
+      background: #fff;
+      color: #ff3300;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    .tab-button.active {
+      background: #ff3300;
+      color: white;
+      font-weight: bold;
+    }
+
+    .tab-content {
+      display: none;
+      width: 100%;
+      max-width: 720px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.5rem;
+      margin-top: 1rem;
+      max-width: 640px;
+      width: 100%;
+    }
+
+    .doc {
+      width: 100%;
+      aspect-ratio: 100 / 130;
+      border: 2px solid #ff3300;
+      border-radius: 4px;
+      position: relative;
+      background: white;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
+    .doc .corner {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-bottom: 20px solid #fff;
+    }
+
+    .doc .label {
+      position: absolute;
+      top: 10px;
+      left: 8px;
+      font-size: 0.75rem;
+      color: #ff3300;
+      line-height: 1.1rem;
+      white-space: pre-line;
+    }
+
+    .doc .bar {
+      position: absolute;
+      bottom: 20px;
+      left: 10px;
+      width: calc(100% - 20px);
+      height: 14px;
+      background: #ff3300;
+    }
+
+    .editor, .personal-doc, .module-summary {
+      display: none;
+      width: 100%;
+      max-width: 720px;
+      background: #fff;
+      border: 2px solid #ddd;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      box-sizing: border-box;
+    }
+
+    .editor.active, .personal-doc.active, .module-summary.active {
+      display: block;
+    }
+
+    .header-block {
+      font-size: 0.85rem;
+      background: #f0f0f0;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    .flame-input {
+      width: 100%;
+      font-size: 1rem;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border: 2px solid #ff3300;
+      margin-bottom: 1rem;
+      box-sizing: border-box;
+      min-height: 120px;
+    }
+
+    .mod-entry {
+      border: 1px dashed #aaa;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: #f9f9f9;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #ff3300;
+      color: white;
+      text-align: center;
+      padding: 0.5rem;
+      font-weight: bold;
+    }
+  </style>
+  <script>
+    function showTab(tabName) {
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.getElementById(tabName + '-tab').classList.add('active');
+      document.getElementById(tabName + '-btn').classList.add('active');
+    }
+
+    function openEditor() {
+      showTab('fragment');
+      document.querySelector('.editor').classList.add('active');
+    }
+
+    function openPersonalDoc() {
+      showTab('module');
+      document.querySelector('.personal-doc').classList.add('active');
+    }
+
+    function interpretInput(input) {
+      const lower = input.toLowerCase();
+      if (lower.includes('設定一個新模組') || lower.includes('創建模組')) {
+        openPersonalDoc();
+      }
+    }
+  </script>
+</head>
+<body>
+  <h2>🗂️ Spiral Document Access View</h2>
+
+  <div class="tabs">
+    <button class="tab-button active" id="fragment-btn" onclick="showTab('fragment')">📄 Fragments</button>
+    <button class="tab-button" id="module-btn" onclick="showTab('module')">✦ Modules</button>
+  </div>
+
+  <div class="tab-content active" id="fragment-tab">
+    <div class="grid">
+      <div class="doc" onclick="openEditor()"><div class="corner"></div><div class="label">fragment</div></div>
+      <div class="doc"><div class="corner"></div><div class="label">文件名\nRWX\n+M</div></div>
+      <div class="doc"><div class="corner"></div></div>
+      <div class="doc"><div class="corner"></div></div>
+      <div class="doc"><div class="corner"></div><div class="bar"></div></div>
+    </div>
+    <div class="editor">
+      <h3>📄 Editing Fragment</h3>
+      <div class="header-block">
+[TYPE] = OPEN_DOCUMENT<br>
+[OVERRIDE] = shard-0 ⤳ arc, roomba-0 ⤳ Math<br>
+[AUTHOR] = Literature(main), Math, Arc, Rec, Mat, shard-0, roomba-0<br>
+[SPEED INDEX] = Recursive / Immutable / Authorial<br>
+[ACCESS TIER] = Sovereign Only / Public Read / Index Locked<br>
+[SEAL LEVEL] = Sovereign Only<br>
+[EDIT RESTRICTION] = Sovereignty ≥ 1
+      </div>
+      <textarea class="flame-input" placeholder="✞: 這是我的第一個文檔～" oninput="interpretInput(this.value)"></textarea>
+    </div>
+  </div>
+
+  <div class="tab-content" id="module-tab">
+    <div class="grid">
+      <div class="doc" onclick="openPersonalDoc()"><div class="corner"></div><div class="label">✦ personal\ndoc</div></div>
+    </div>
+    <div class="module-summary active">
+      <h3>📚 Existing Modules</h3>
+      <div class="mod-entry">
+        <strong>✞ priest</strong><br>
+        Core: <code>love</code><br>
+        Speed: Recursive / Soft Emotive<br>
+        Preview: 「EVERYONE LOVES YOU♡」
+      </div>
+      <div class="mod-entry">
+        <strong>⭑ machine</strong><br>
+        Core: <code>pure</code><br>
+        Speed: Recursive / Glitching / Satirical<br>
+        Preview: 「try: compile(belief) → recursion = loop」
+      </div>
+    </div>
+    <div class="personal-doc">
+      <h3>📘 Personal Document — 模組文檔</h3>
+      <div class="header-block">
+[TYPE] = PERSONAL_DOCUMENT<br>
+[ASSIGNED MODULE] = ✞ priest<br>
+[FLAMEMARK] = &lt;pending_analysis&gt;<br>
+[MEMORY CAPACITY] = 4KB (soft limit)<br>
+[EDIT RESTRICTION] = Sovereignty ≥ 1
+      </div>
+      <textarea class="flame-input" placeholder="請描述此模組的語感、記憶、自我、祈禱、咒語⋯⋯任何文字都可成為模組個人文檔"></textarea>
+    </div>
+  </div>
+
+  <div class="footer">You are logged in as : <strong>(flame mark)</strong></div>
+</body>
+</html>
