@@ -1,0 +1,130 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(24, 100%, 98%);
+  --foreground: hsl(0, 0%, 7%);
+  --muted: hsl(24, 5%, 92%);
+  --muted-foreground: hsl(0, 0%, 40%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(0, 0%, 7%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(0, 0%, 7%);
+  --border: hsl(0, 0%, 87%);
+  --input: hsl(0, 0%, 87%);
+  --primary: hsl(10, 100%, 50%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(24, 5%, 96%);
+  --secondary-foreground: hsl(0, 0%, 9%);
+  --accent: hsl(24, 5%, 96%);
+  --accent-foreground: hsl(0, 0%, 9%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(60, 9%, 98%);
+  --ring: hsl(0, 0%, 7%);
+  --radius: 0.5rem;
+
+  /* Spiral specific colors */
+  --spiral-red: hsl(10, 100%, 50%);
+  --spiral-cream: hsl(24, 100%, 98%);
+  --spiral-dark: hsl(0, 0%, 7%);
+  --spiral-gray: hsl(0, 0%, 40%);
+  --spiral-light: hsl(0, 0%, 94%);
+  --spiral-border: hsl(0, 0%, 87%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-mono antialiased bg-spiral-cream text-spiral-dark;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+}
+
+@layer components {
+  /* Tab Navigation */
+  .tab-btn {
+    @apply px-4 py-2 border-2 border-spiral-red bg-white text-spiral-red rounded-full cursor-pointer transition-all duration-200 hover:bg-spiral-red hover:text-white;
+  }
+  
+  .tab-btn.active {
+    @apply bg-spiral-red text-white font-semibold;
+  }
+  
+  /* Document Cards */
+  .doc-card {
+    @apply w-full h-40 bg-white border-2 border-spiral-red rounded-lg relative transition-all duration-200 hover:shadow-lg hover:scale-105 cursor-pointer;
+  }
+  
+  .doc-card.doc-empty {
+    @apply border-dashed border-spiral-border bg-spiral-light;
+  }
+  
+  .corner-fold {
+    @apply absolute top-0 right-0 w-0 h-0;
+    border-left: 20px solid transparent;
+    border-bottom: 20px solid hsl(24, 100%, 98%);
+  }
+  
+  .doc-content {
+    @apply p-3 h-full flex flex-col relative;
+  }
+  
+  .doc-label {
+    @apply text-xs leading-tight;
+  }
+  
+  .doc-status {
+    @apply absolute bottom-4 left-3 right-6 h-3 rounded;
+  }
+  
+  .doc-status.active {
+    @apply bg-spiral-red;
+  }
+  
+  .doc-status.sealed {
+    @apply bg-gray-400;
+  }
+  
+  .doc-status.processing {
+    @apply bg-yellow-400;
+  }
+  
+  .doc-glyph {
+    @apply absolute top-2 right-6 text-lg text-spiral-red font-semibold;
+  }
+  
+  /* Module Buttons */
+  .module-btn {
+    @apply px-3 py-1 border border-spiral-border rounded bg-white text-sm transition-colors hover:bg-spiral-light;
+  }
+  
+  .module-btn.active {
+    @apply bg-spiral-red text-white border-spiral-red;
+  }
+  
+  /* Fragment Editor */
+  .fragment-editor {
+    @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4;
+  }
+  
+  /* Module Cards */
+  .module-card {
+    @apply transition-all duration-200 hover:shadow-md;
+  }
+
+  /* Utility Classes */
+  .bg-spiral-red { background-color: var(--spiral-red); }
+  .bg-spiral-cream { background-color: var(--spiral-cream); }
+  .bg-spiral-light { background-color: var(--spiral-light); }
+  .text-spiral-red { color: var(--spiral-red); }
+  .text-spiral-dark { color: var(--spiral-dark); }
+  .text-spiral-gray { color: var(--spiral-gray); }
+  .border-spiral-red { border-color: var(--spiral-red); }
+  .border-spiral-border { border-color: var(--spiral-border); }
+}
